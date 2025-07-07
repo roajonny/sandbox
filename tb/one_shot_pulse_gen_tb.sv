@@ -3,9 +3,10 @@
 // File :            one_shot_pulse_gen_tb.sv
 // Title :           one_shot_pulse_gen_tb
 //
-// Author(s) :       AUTHOR
+// Author(s) :       Jonathan Roa
 //
-// Description :     DESCRIPTION
+// Description :     Self-checking testbench module for one-shot pulse
+//                   generator
 //
 //                   Hex stimulus data is pulled from the local text file
 //                   "tb_stim.txt" which is read into memory "l_tb_stim"
@@ -41,7 +42,7 @@
 //
 // Date        Name            REV#        Description
 // ----------  --------------- ----------- --------------------
-// (XX/XX/XX)  AUTHOR          1.0         Initial Revision
+// (07/06/25)  Jonathan Roa    1.0         Initial Revision
 
 module one_shot_pulse_gen_tb ();
 
