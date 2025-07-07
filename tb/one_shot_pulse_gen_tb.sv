@@ -67,6 +67,9 @@ module one_shot_pulse_gen_tb ();
     // Declare your DUT wires/registers
     // and initialize them in "init();"
 
+    integer int_TST_INDEX;
+    integer int_CLK_COUNT;
+
     logic l_go;
     logic l_stop;
     wire  w_pulse;
@@ -109,6 +112,8 @@ module one_shot_pulse_gen_tb ();
 
         // Test case #1: Single strobe of "go", module responds uninterrupted
         // by "stop" control
+        int_TST_INDEX = 1;
+
         l_go <= 1'b1;
         #p_CLK_PERIOD;
         l_go <= 1'b0;
@@ -117,6 +122,8 @@ module one_shot_pulse_gen_tb ();
 
         // Test case #2: Single strobe of "go", module interrupted by "stop"
         // control after two clock cycles
+        int_TST_INDEX = 2;
+
         l_go <= 1'b1;
         #p_CLK_PERIOD;
         l_go <= 1'b0;
@@ -127,6 +134,37 @@ module one_shot_pulse_gen_tb ();
         
         wait_500ns();
 
+    end
+
+    // Assertion checker
+    initial begin
+
+        // Test case #1
+        int_CLK_COUNT <= 0;
+        wait (int_TST_INDEX == 1 && w_pulse == 1'b1);
+        $display("Test #1: Pulse goes high", $time);
+        while (w_pulse == 1'b1) begin
+            @(posedge l_clk) begin
+            int_CLK_COUNT++;
+            end
+        end
+        $display("Test #1: Pulse goes low", $time);
+        assert(int_CLK_COUNT > 4 && int_CLK_COUNT < 7) $display("Test 1: PASS");
+            else $error("Test 1: FAIL");
+
+        // Test case #2
+        int_CLK_COUNT <= 0;
+        wait (int_TST_INDEX == 2 && w_pulse == 1'b1);
+        $display("Test #2: Pulse goes high", $time);
+        while (w_pulse == 1'b1) begin
+            @(posedge l_clk) begin
+            int_CLK_COUNT++;
+            end
+        end
+        $display("Test #2: Pulse goes low", $time);
+        assert(int_CLK_COUNT > 0 && int_CLK_COUNT < 4) $display("Test 2: PASS");
+            else $error("Test 2: FAIL");
+            $display("CLK_COUNT: %d", int_CLK_COUNT);
     end
 
     // =========================
