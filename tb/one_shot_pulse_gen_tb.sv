@@ -134,6 +134,7 @@ module one_shot_pulse_gen_tb ();
         
         wait_500ns();
 
+        $display("Total errors: %d", int_ERR_COUNT);
     end
 
     // Assertion checker
@@ -150,7 +151,7 @@ module one_shot_pulse_gen_tb ();
         end
         $display("Test #1: Pulse goes low", $time);
         assert(int_CLK_COUNT > 4 && int_CLK_COUNT < 7) $display("Test 1: PASS");
-            else $error("Test 1: FAIL");
+            else begin int_ERR_COUNT++; $error("Test 1: FAIL"); end
 
         // Test case #2
         int_CLK_COUNT <= 0;
@@ -163,8 +164,7 @@ module one_shot_pulse_gen_tb ();
         end
         $display("Test #2: Pulse goes low", $time);
         assert(int_CLK_COUNT > 0 && int_CLK_COUNT < 4) $display("Test 2: PASS");
-            else $error("Test 2: FAIL");
-            $display("CLK_COUNT: %d", int_CLK_COUNT);
+            else begin int_ERR_COUNT++; $error("Test 2: FAIL"); end
     end
 
     // =========================
